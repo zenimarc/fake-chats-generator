@@ -3,6 +3,5 @@
 @tailwind utilities;
 
 :root {
-    --android-header-color: #128C7E;
     --whatsapp-bg-light: url('/images/whatsapp_bg_light.webp');
   }

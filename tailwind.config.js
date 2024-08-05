@@ -4,7 +4,8 @@ export default {
 	theme: {
 		extend: {
 			colors: {
-				'android-bar': 'var(--android-header-color)'
+				'android-bar': '#128C7E',
+				'wp-message': '#e6ffda'
 			}
 		}
 	},

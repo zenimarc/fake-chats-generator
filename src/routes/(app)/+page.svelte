@@ -9,8 +9,7 @@
 		<div class="h-full flex flex-col">
 			<SystemBar />
 			<WhatsappHeader />
-			<section class="c-chat flex-1">
-				<h1>Welcome to SvelteKit</h1>
+			<section class="c-chat flex-1 pt-2">
 				<ChatMessage align="right" />
 			</section>
 		</div>

@@ -3,7 +3,7 @@
 
 	const { align }: { align: 'right' | 'left' } = $props();
 
-	const color = $derived(align === 'right' ? '#e6ffda' : '#fff');
+	const color = $derived(align === 'right' ? 'wp-message' : '#fff');
 </script>
 
 <div class={cn('flex flex-row', align === 'right' ? 'justify-end' : 'justify-start')}>
@@ -26,7 +26,7 @@
 				</svg>
 			</span>
 			<!-- message rect  -->
-			<div class={cn(`c-wp-message flex flex-row max-w-[280px]`, `bg-[${color}]`, 'relative z-20')}>
+			<div class={cn(`c-wp-message flex flex-row max-w-[280px]`, `bg-${color}`, 'relative z-20')}>
 				<p class="pl-1">Hii</p>
 				<i class="fa fa-pencil" aria-hidden="true"></i>
 				<span class="space-ex w-[84px]"></span>
