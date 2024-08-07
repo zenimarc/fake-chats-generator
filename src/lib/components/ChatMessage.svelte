@@ -1,37 +1,63 @@
 <script lang="ts">
+	import MessageBubbleLeft from './MessageBubbleLeft.svelte';
+	import MessageBubbleRight from './MessageBubbleRight.svelte';
 	import { cn } from './utils';
 
-	const { align }: { align: 'right' | 'left' } = $props();
+	const {
+		align,
+		text,
+		isSubsequent = false,
+		time
+	}: { align: 'right' | 'left'; text: string; isSubsequent?: boolean; time: string } = $props();
 
-	const color = $derived(align === 'right' ? 'wp-message' : '#fff');
+	const color = $derived(align === 'right' ? 'wp-message' : 'white');
 </script>
 
-<div class={cn('flex flex-row', align === 'right' ? 'justify-end' : 'justify-start')}>
+<!--Chat row-->
+<div
+	class={cn(
+		'flex flex-row',
+		align === 'right' ? 'justify-end' : 'justify-start',
+		isSubsequent ? 'mt-1.5' : 'mt-2.5'
+	)}
+>
 	<!-- msg wrapper (rect + svg path) -->
-	<div class="min-h-4 pr-5">
+	<div class={cn('flex-1 min-h-4 pr-5 flex', align === 'right' ? 'justify-end' : 'justify-start')}>
 		<!-- message rect wrapper (needed to create a new stacking context relative) -->
-		<div class="relative">
-			<!-- message svg bubble -->
-			<span class="absolute top-0 -right-2 w-[12px] h-[21px] z-0">
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 7 12.19" height="21" width="12">
-					<path
-						d="M5.19,1H0V12.19L6.47,3.57C7.53,2.16,7,1,5.19,1Z"
-						style="isolation:isolate;opacity:0.12999999523162842"
-					></path>
-					<path
-						d="M5.19,0H0V11.19L6.47,2.57C7.53,1.16,7,0,5.19,0Z"
-						style="fill:#e6ffda"
-						class="msg-arrow-right"
-					></path>
-				</svg>
-			</span>
+		<div class={cn('relative', align === 'left' && 'ml-5', 'max-w-[75%]')}>
+			<!-- message svg bubble right -->
+			{#if !isSubsequent && align === 'right'}
+				<span class="absolute top-0 -right-2 w-[12px] h-[21px] z-0">
+					<MessageBubbleRight />
+				</span>
+			{:else if !isSubsequent && align === 'left'}
+				<span class="absolute top-0 -left-2 w-[12px] h-[21px] z-0">
+					<MessageBubbleLeft />
+				</span>
+			{/if}
 			<!-- message rect  -->
-			<div class={cn(`c-wp-message flex flex-row max-w-[280px]`, `bg-${color}`, 'relative z-20')}>
-				<p class="pl-1">Hii</p>
+			<div
+				class={cn(
+					{
+						'rounded-tl-[10px] rounded-tr-0 rounded-br-[10px] rounded-bl-[10px]':
+							align === 'right' && !isSubsequent,
+						'rounded-tl-0 rounded-tr-[10px] rounded-br-[10px] rounded-bl-[10px]':
+							align === 'left' && !isSubsequent,
+						'rounded-[10px]': isSubsequent
+					},
+					'pt-[4px] pr-[5px] pb-[6px] pl-[7px]',
+					`flex flex-row flex-wrap max-w-[280px]`,
+					`bg-${color}`,
+					'relative z-20',
+					'hyphenate',
+					'c-wp-message'
+				)}
+			>
+				<p class="pl-1">{text}</p>
 				<i class="fa fa-pencil" aria-hidden="true"></i>
-				<span class="space-ex w-[84px]"></span>
+				<span class="w-[84px]"></span>
 				<div class="absolute right-[10px] bottom-[2px] flex flex-row items-center text-xs gap-1">
-					<span class="text-black/45" data-time="08:42">08:42 am</span>
+					<span class="text-black/45" data-time={time}>{time}</span>
 					<div class="message-status msg-status" data-status="read">
 						<svg
 							viewBox="0 0 16 11"
@@ -58,9 +84,14 @@
 
 <style>
 	.c-wp-message {
-		border-radius: 10px 0 10px 10px;
-		padding: 4px 5px 6px 7px;
-		margin: 6px 0 5px 0;
 		box-shadow: 0 1px 1px rgb(0 0 0/13%);
+	}
+	.hyphenate {
+		overflow-wrap: break-word;
+		word-break: break-word;
+		hyphens: auto;
+		-webkit-hyphens: auto; /* For Safari and older versions of browsers */
+		-moz-hyphens: auto; /* For Firefox */
+		-ms-hyphens: auto; /* For IE/Edge */
 	}
 </style>
